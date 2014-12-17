@@ -10,6 +10,6 @@ FROM tutum/wordpress-stackable:latest
 # RUN chown www-data:www-data /app/wp-content -R
 
 ADD php.ini /etc/php5/apache2/php.ini
-Add startup.sh startup.sh 
+ADD startup.sh startup.sh 
 
 CMD ["/startup.sh"]
