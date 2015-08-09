@@ -20,7 +20,7 @@ RUN curl -o wordpress.tar.gz -SL https://wordpress.org/wordpress-${WORDPRESS_VER
 	&& rm wordpress.tar.gz \
 	&& chown -R www-data:www-data /usr/src/wordpress
 
-COPY config/php.ini /usr/local/etc/php	
+COPY config/php.ini /usr/local/etc/php/php.ini	
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
