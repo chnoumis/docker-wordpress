@@ -22,6 +22,8 @@ RUN curl -o wordpress.tar.gz -SL https://wordpress.org/wordpress-${WORDPRESS_VER
 
 COPY config/php.ini /usr/local/etc/php/php.ini	
 
+pecl install zip
+
 COPY docker-entrypoint.sh /entrypoint.sh
 
 # grr, ENTRYPOINT resets CMD now
