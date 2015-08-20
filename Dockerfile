@@ -26,6 +26,11 @@ RUN pecl install zip
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
-# grr, ENTRYPOINT resets CMD now
+# Install mod-pagespeed
+RUN wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb
+RUN dpkg -i mod-pagespeed-*.deb
+RUN apt-get -f install
+
+# ENTRYPOINT resets CMD now
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["apache2-foreground"]
