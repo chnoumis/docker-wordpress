@@ -28,8 +28,8 @@ COPY docker-entrypoint.sh /entrypoint.sh
 
 # Install mod-pagespeed
 RUN wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb \
-   dpkg -i mod-pagespeed-*.deb \ 
-   apt-get -f install
+   && dpkg -i mod-pagespeed-*.deb \ 
+   && apt-get -f install
 
 # ENTRYPOINT resets CMD now
 ENTRYPOINT ["/entrypoint.sh"]
