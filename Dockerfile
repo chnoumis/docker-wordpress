@@ -3,7 +3,7 @@ FROM php:5.6-apache
 RUN a2enmod rewrite
 
 # install the PHP extensions we need
-RUN apt-get update && apt-get install -y wget libpng12-dev libjpeg-dev \ 
+RUN apt-get update && apt-get install -y wget libpng12-dev libjpeg-dev  libtidy-dev \ 
     && rm -rf /var/lib/apt/lists/* \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
 	&& docker-php-ext-install gd \
@@ -11,10 +11,12 @@ RUN apt-get update && apt-get install -y wget libpng12-dev libjpeg-dev \
     && docker-php-ext-install tidy \ 
     && docker-php-ext-install opcache
     
-RUN pecl install zip memcache 
+RUN pecl install zip memcache apc
 
 RUN a2enmod headers
 RUN a2enmod expires
+
+RUN cd /usr/local/src && wget http://pecl.php.net/get/APC-3.1.9.tgz && tar -xzf APC-3.1.9.tgz && cd APC-3.1.9
 
 VOLUME /var/www/html
 
