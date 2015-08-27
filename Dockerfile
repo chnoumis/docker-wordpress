@@ -3,11 +3,18 @@ FROM php:5.6-apache
 RUN a2enmod rewrite
 
 # install the PHP extensions we need
-RUN apt-get update && apt-get install -y wget libpng12-dev libjpeg-dev tidy \ 
+RUN apt-get update && apt-get install -y wget libpng12-dev libjpeg-dev \ 
     && rm -rf /var/lib/apt/lists/* \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
-	&& docker-php-ext-install gd
-RUN docker-php-ext-install mysqli
+	&& docker-php-ext-install gd \
+    && docker-php-ext-install mysqli \
+    && docker-php-ext-install tidy \ 
+    && docker-php-ext-install opcache
+    
+RUN pecl install zip memcache 
+
+RUN a2enmod headers
+RUN a2enmod expires
 
 VOLUME /var/www/html
 
@@ -23,8 +30,6 @@ RUN curl -o wordpress.tar.gz -SL https://wordpress.org/wordpress-${WORDPRESS_VER
 
 COPY config/php.ini /usr/local/etc/php/php.ini	
 
-RUN pecl install zip memcache 
-
 COPY docker-entrypoint.sh /entrypoint.sh
 
 # Install mod-pagespeed
@@ -32,9 +37,6 @@ RUN wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_
    && dpkg -i mod-pagespeed-*.deb \ 
    && apt-get -f install \
    && rm mod-pagespeed-*.deb
-
-RUN a2enmod headers
-RUN a2enmod expires
 
 # ENTRYPOINT resets CMD now
 ENTRYPOINT ["/entrypoint.sh"]
